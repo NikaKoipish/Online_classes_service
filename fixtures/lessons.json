@@ -1,0 +1,35 @@
+[
+  {
+    "model": "classes.lesson",
+    "pk": 2,
+    "fields": {
+      "title": "advance",
+      "description": "advance",
+      "preview": "",
+      "video": "",
+      "course": 1
+    }
+  },
+  {
+    "model": "classes.lesson",
+    "pk": 3,
+    "fields": {
+      "title": "basic",
+      "description": "basic",
+      "preview": "",
+      "video": "",
+      "course": 1
+    }
+  },
+  {
+    "model": "classes.lesson",
+    "pk": 4,
+    "fields": {
+      "title": "advance",
+      "description": "advance",
+      "preview": "",
+      "video": "",
+      "course": 2
+    }
+  }
+]

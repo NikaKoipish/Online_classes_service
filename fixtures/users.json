@@ -1,0 +1,20 @@
+[
+  {
+    "model": "users.user",
+    "fields": {
+      "email": "n@mail.ru",
+      "phone": "",
+      "city": "",
+      "avatar": ""
+    }
+  },
+  {
+    "model": "users.user",
+    "fields": {
+      "email": "p@mail.ru",
+      "phone": "",
+      "city": "",
+      "avatar": ""
+    }
+  }
+]
