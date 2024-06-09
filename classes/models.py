@@ -1,5 +1,9 @@
 from django.db import models
 
+from config.settings import AUTH_USER_MODEL
+
+User = AUTH_USER_MODEL
+
 NULLABLE = {"null": True, "blank": True}
 
 
@@ -10,6 +14,7 @@ class Course(models.Model):
         upload_to="courses/previews", verbose_name="превью курса", **NULLABLE
     )
     description = models.TextField(verbose_name="описание курса")
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, **NULLABLE, verbose_name="Создатель")
 
     def __str__(self):
         return self.title
@@ -32,6 +37,7 @@ class Lesson(models.Model):
     course = models.ForeignKey(
         Course, on_delete=models.CASCADE, related_name="lessons", verbose_name="курс"
     )
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, **NULLABLE, verbose_name="Создатель")
 
     def __str__(self):
         return self.title

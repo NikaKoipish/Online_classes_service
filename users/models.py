@@ -17,8 +17,6 @@ class User(AbstractUser):
         upload_to="users/avatars", verbose_name="аватарка", **NULLABLE
     )
 
-    token = models.CharField(max_length=100, verbose_name="token", **NULLABLE)
-
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
 
