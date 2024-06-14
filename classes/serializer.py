@@ -28,10 +28,10 @@ class CourseDetailSerializer(serializers.ModelSerializer):
         return Lesson.objects.filter(course=obj).count()
 
     def get_subscription_status(self, obj):
-        if Subscription.objects.get(course=obj).exists():
+        if Subscription.objects.get(course=obj):
             return f'Подписка на курс активна'
         return f'Подписка на курс не активирована'
 
     class Meta:
         model = Course
-        fields = ("id", "title", "preview", "description", "count_course_lessons", "lessons", "subscription_status")
+        fields = "__all__"

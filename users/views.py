@@ -4,6 +4,7 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, DestroyAPIView, UpdateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from classes.models import Course
 from users.models import User, Payment, Subscription
@@ -54,7 +55,7 @@ class PaymentListAPIView(ListAPIView):
     search_fields = ("payment_method",)
 
 
-class SubscriptionCreateAPIView(CreateAPIView):
+class SubscriptionAPIView(APIView):
     serializer_class = SubscriptionSerializer
     queryset = Subscription.objects.all()
     permission_classes = [IsAuthenticated]
@@ -62,17 +63,17 @@ class SubscriptionCreateAPIView(CreateAPIView):
     def post(self, *args, **kwargs):
         user = self.request.user
         course_id = self.request.data.get('course')
-        course_item = get_object_or_404(Course, id=course_id)
-        subs_item = Subscription.objects.get(course=course_item, user=user)
+        course_item = get_object_or_404(Course, pk=course_id)
+        subs_item = Subscription.objects.filter(user=user, course=course_item)
 
         # Если подписка у пользователя на этот курс есть - удаляем ее
         if subs_item.exists():
-            sub = Subscription.objects.get(user=user, course=course_item).delete()
-            message = 'подписка на курс {course.title} удалена'
+            subs_item.delete()
+            message = f'подписка на курс {course_item} удалена'
         # Если подписки у пользователя на этот курс нет - создаем ее
         else:
             sub = Subscription.objects.create(user=user, course=course_item)
-            message = 'подписка на курс {course.title} добавлена'
+            message = f'подписка на курс {course_item} добавлена'
             sub.save()
         # Возвращаем ответ в API
         return Response({"message": message})
