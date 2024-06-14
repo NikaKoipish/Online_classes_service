@@ -28,7 +28,7 @@ class CourseDetailSerializer(serializers.ModelSerializer):
         return Lesson.objects.filter(course=obj).count()
 
     def get_subscription_status(self, obj):
-        if Subscription.objects.get(course=obj):
+        if Subscription.objects.filter(course=obj):
             return f'Подписка на курс активна'
         return f'Подписка на курс не активирована'
 
