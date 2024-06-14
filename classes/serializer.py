@@ -29,8 +29,8 @@ class CourseDetailSerializer(serializers.ModelSerializer):
 
     def get_subscription_status(self, obj):
         if Subscription.objects.filter(course=obj):
-            return f'Подписка на курс активна'
-        return f'Подписка на курс не активирована'
+            return 'Подписка на курс активна'
+        return 'Подписка на курс не активирована'
 
     class Meta:
         model = Course
