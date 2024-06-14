@@ -7,5 +7,5 @@ class VideoSourseValidator:
 
     def __call__(self, value):
         val = dict(value).get(self.field)
-        if "youtube.com" not in val:
+        if val and "youtube.com" not in val:
             raise serializers.ValidationError(f"{self.field} должен ссылаться только на видео с youtube.com")
