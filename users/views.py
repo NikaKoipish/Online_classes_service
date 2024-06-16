@@ -9,6 +9,7 @@ from rest_framework.views import APIView
 from classes.models import Course
 from users.models import User, Payment, Subscription
 from users.serializer import UserSerializer, PaymentSerializer, UserDetailSerializer, SubscriptionSerializer
+from users.services import create_stripe_product, create_stripe_price, create_stripe_session
 
 
 class UserListAPIView(ListAPIView):
@@ -53,6 +54,20 @@ class PaymentListAPIView(ListAPIView):
     ordering_fields = ('date_of_payment',)
     filterset_fields = ('course', 'lesson', 'payment_method',)
     search_fields = ("payment_method",)
+
+
+class PaymentCreateAPIView(CreateAPIView):
+    serializer_class = PaymentSerializer
+    queryset = Payment.objects.all()
+
+    def perform_create(self, serializer):
+        payment = serializer.save(user=self.request.user)
+        product = create_stripe_product(payment)
+        price = create_stripe_price(payment.amount, product)
+        session_id, link = create_stripe_session(price)
+        payment.session_id = session_id
+        payment.link = link
+        payment.save()
 
 
 class SubscriptionAPIView(APIView):

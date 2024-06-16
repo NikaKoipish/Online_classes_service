@@ -16,3 +16,5 @@ EMAIL_USE_SSL=True
 
 LOCATION=redis://***.*.*.*:****
 CACHE_ENABLED=True
+
+STRIPE_SECRET_KEY=
