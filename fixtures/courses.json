@@ -1,0 +1,20 @@
+[
+  {
+    "model": "classes.course",
+    "pk": 1,
+    "fields": {
+      "title": "Python",
+      "preview": "",
+      "description": "very useful"
+    }
+  },
+  {
+    "model": "classes.course",
+    "pk": 2,
+    "fields": {
+      "title": "Java",
+      "preview": "",
+      "description": "basic"
+    }
+  }
+]
