@@ -22,7 +22,7 @@ def block_the_user():
     today = timezone.now().today().date()
     users = User.objects.all()
     for user in users:
-        if user.last_login and ((today - user.last_login.date()).days > 30):
+        if user.is_active and user.last_login and ((today - user.last_login.date()).days > 30):
             user.is_active = False
             user.save()
             print(f'Деактивирован пользователь {user.id}')
