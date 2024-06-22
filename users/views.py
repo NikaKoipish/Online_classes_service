@@ -5,6 +5,7 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView,
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from users.tasks import send_sub_information
 
 from classes.models import Course
 from users.models import User, Payment, Subscription
@@ -85,10 +86,12 @@ class SubscriptionAPIView(APIView):
         if subs_item.exists():
             subs_item.delete()
             message = f'подписка на курс {course_item} удалена'
+            send_sub_information.delay(message, user.email)
         # Если подписки у пользователя на этот курс нет - создаем ее
         else:
             sub = Subscription.objects.create(user=user, course=course_item)
             message = f'подписка на курс {course_item} добавлена'
             sub.save()
+            send_sub_information.delay(message, user.email)
         # Возвращаем ответ в API
         return Response({"message": message})

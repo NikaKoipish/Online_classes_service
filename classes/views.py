@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.generics import (CreateAPIView, DestroyAPIView,
                                      ListAPIView, RetrieveAPIView,
@@ -7,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from classes.models import Course, Lesson
 from classes.paginators import ClassesPaginator
 from classes.serializer import CourseSerializer, LessonSerializer, CourseDetailSerializer
+from classes.tasks import send_update_information
 from users.permissions import IsModer, IsOwner
 
 
@@ -23,6 +25,11 @@ class CourseViewSet(viewsets.ModelViewSet):
         course = serializer.save()
         course.owner = self.request.user
         course.save()
+
+    def update(self, request, pk):
+        course = get_object_or_404(Course, pk=pk)
+        send_update_information.delay(course_id=course.id)
+        return super().update(request)
 
     def get_permissions(self):
         if self.action == "create":
